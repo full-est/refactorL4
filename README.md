@@ -1,6 +1,6 @@
-# SimpleExampleFastAPI
+# SimpleFastAPIExample
 
-[python-img]
+[![python](https://img.shields.io/pypi/pyversions/fastapi)]()
 
 This is a simple API-REST created with FastApi.
 
@@ -60,12 +60,8 @@ Andres – andres.ch(at)protonmail(dot)com
 
 ## Contributing
 
-1. Fork it (<https://github.com/yourname/yourproject/fork>)
+1. Fork it (<https://github.com/a-chacon/simple-fastapi-example/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
 5. Create a new Pull Request
-
-<!-- Markdown link & img dfn's -->
-
-[python-img]: https://img.shields.io/pypi/pyversions/p.svg
