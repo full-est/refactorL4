@@ -3,6 +3,24 @@ from sqlalchemy.orm import relationship
 
 from app.db.database import Base
 
+class Role(Base):
+    __tablename__="roles"
+    id = Column(Integer, primary_key=True, index=True)
+    role = Column(String(255))
+
+    user_projects = relationship("UserProject", back_populates="role")
+
+class UserProject(Base):
+    __tablename__= "user_projects"
+    # id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(ForeignKey('users.id'), primary_key=True)
+    project_id = Column(ForeignKey('projects.id'), primary_key=True)
+    role_id = Column(Integer, ForeignKey('roles.id'))
+
+    project = relationship("Project", back_populates="users")
+    user = relationship("User", back_populates="projects")
+
+    role = relationship("Role", back_populates="user_projects")
 
 class User(Base):
     __tablename__ = "users"
@@ -13,27 +31,16 @@ class User(Base):
     hashed_password = Column(String(255))
     is_active = Column(Boolean, default=True)
 
-    events = relationship("UserEvent", back_populates="user")
+    projects = relationship("UserProject", back_populates='user')
 
-class Event(Base):
-    __tablename__= "events"
+class Project(Base):
+    __tablename__= "projects"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), nullable=False)
+    title = Column(String(255), nullable=False)
     description = Column(Text)
-    image = Column(String(255))
-    date = Column(DateTime)
+    private = Column(Boolean, default=True)
+    active = Column(Boolean, default=True)
+    starts = Column(Integer, default=0)
 
-    users = relationship("UserEvent", back_populates="event")
-
-class UserEvent(Base):
-    __tablename__= "user_events"
-
-    id = Column(Integer, primary_key=True, index=True)
-    relation = Column(String(255), nullable=False)
-    confirmed = Column(Boolean, default=False)
-    user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
-    event_id = Column(Integer, ForeignKey('events.id'), primary_key=True)
-
-    user = relationship("User", back_populates="events" )
-    event = relationship("Event", back_populates="users" )
+    users = relationship("UserProject", back_populates='project')
