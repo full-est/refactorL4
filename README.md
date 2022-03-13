@@ -14,10 +14,27 @@ This app use:
 * [python-jose](https://python-jose.readthedocs.io/en/latest/) (jwt for auth)
 * [passlib](https://passlib.readthedocs.io/en/stable/) (encrypt passwords)
 
+Trying to do some basic functionalities of an API REST like:
+
+* Authentication
+* CRUD for resources (working)
+* Send emails (pending)
+* Background tasks (pending)
+* File storage system - upload files to aws maybe (pending)
+*TESTS
+
+
+
 
 ## Installation
 
-I recommend create your own virtual enviroment. After that:
+I recommend create your own virtual enviroment using [pipenv](https://pipenv.pypa.io). After that:
+
+```bash
+pipenv install
+```
+
+Or with other enviroment management tool:
 
 ```bash
 pip install -r requirements.txt
@@ -39,7 +56,7 @@ For serve run:
 uvicorn app.main:app
 ```
 
-If you are going to make changes on the project use the --reload flag.
+If you are going to make changes on the project use the --reload flag so you see the changes in the moment without restart the server:
 
 ```bash
 uvicorn app.main:app --reload
