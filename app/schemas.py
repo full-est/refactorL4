@@ -2,6 +2,36 @@ from typing import Optional
 from datetime import datetime
 from pydantic import BaseModel, ValidationError, validator
 
+"""
+    Role Schemas.
+"""
+class Role(BaseModel):
+    id: int
+    role: str
+
+"""
+    UserProject
+"""
+class UserProjectBase(BaseModel):
+    user_id: int
+    project_id: int
+    role_id: int
+
+"""
+    Project
+"""
+class ProjectBase(BaseModel):
+    title: str
+    description: str
+    private: bool
+    active: bool
+    starts: int
+
+class Project(ProjectBase):
+    id: int
+
+    class Config:
+        orm_mode = True
 
 """
     User Schemas.
@@ -17,7 +47,6 @@ class User(UserBase):
     id: int
     email: str
     is_active: bool
-    # events: list[Event] = []
 
     class Config:
         orm_mode = True
@@ -26,42 +55,7 @@ class UserUpdate(UserBase):
     email: Optional[str]
     password: Optional[str]
 
-#
-# """
-#     Event Schemas.
-# """
-# class EventBase(BaseModel):
-#     name: str
-#     description: str
-#     date: datetime
-#
-# class Event(EventBase):
-#     id: int
-#     users: list[Event] = []
-#
-#     class Config:
-#         orm_mode = True
-#
-# """
-#     UserEvent Schemas.
-# """
-# class UserEventBase(BaseModel):
-#     relation: str
-#     assistance_confirmed: bool
-#
-#     @validator('relation')
-#     def relation_must_be_included(cls, v):
-#         if v not in ["organizer", "guest"]:
-#             raise ValueError('must be organizer or guest')
-#         return v
-#
-# class UserEvent(UserEventBase):
-#     id: int
-#     user: User
-#     event: Event
-#
-#     class Config:
-#         orm_mode = True
+
 
 """
     Token schemas
@@ -73,3 +67,19 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
+
+
+"""
+    With relations. Avoid cirular dependencies.
+"""
+
+class UserProjectSchema(UserProjectBase):
+    project: Project
+    user: User
+    role: Role
+
+class ProjectSchema(Project):
+    users: list[UserProjectBase] = []
+
+class UserSchema(User):
+    projects: list[UserProjectBase] = []
