@@ -15,7 +15,7 @@ class UserProject(Base):
     # id = Column(Integer, primary_key=True, index=True)
     user_id = Column(ForeignKey('users.id'), primary_key=True)
     project_id = Column(ForeignKey('projects.id'), primary_key=True)
-    role_id = Column(Integer, ForeignKey('roles.id'))
+    role_id = Column(Integer, ForeignKey('roles.id'), primary_key=True)
 
     project = relationship("Project", back_populates="users")
     user = relationship("User", back_populates="projects")
