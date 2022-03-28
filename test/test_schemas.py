@@ -15,7 +15,7 @@ def test_user_project():
     assert user_project.role.id == user_project.role_id
 
 def test_user_schemas(db):
-    user_create = schemas.UserCreate(name="andres", email="andres.ch@pm.me", password="Test123")
+    user_create = schemas.UserCreate(name="andres", email="andres.ch@pm.me", password="Test12345")
     assert user_create.name == "andres"
     assert user_create.email == "andres.ch@pm.me"
-    assert user_create.password == "Test123"
+    assert user_create.password == "Test12345"

@@ -1,6 +1,6 @@
 from typing import Optional
 from datetime import datetime
-from pydantic import BaseModel, ValidationError, validator
+from pydantic import BaseModel, Field, EmailStr
 
 """
     Role Schemas.
@@ -9,23 +9,39 @@ class Role(BaseModel):
     id: int
     role: str
 
+    class Config:
+        orm_mode = True
+
 """
     UserProject
 """
 class UserProjectBase(BaseModel):
-    user_id: int
-    project_id: int
-    role_id: int
+    user_id: Optional[int]
+    project_id: Optional[int]
+    role_id: Optional[int]
+
+    class Config:
+        orm_mode = True
 
 """
     Project
 """
 class ProjectBase(BaseModel):
-    title: str
-    description: str
-    private: bool
-    active: bool
-    starts: int
+    title: str = Field(...,min_length=5, max_length=255)
+    description: str = Field(...,min_length=10, max_length=255)
+    private: Optional[bool]
+    active: Optional[bool]
+    starts: Optional[int] = 0
+
+    class Config:
+        schema_extra = {
+            "example":{
+                "title": "CuantoMasMejor",
+                "description": "Aplicacion web que calcula tus gastos.",
+                "private": False,
+                "active": True
+            }
+        }
 
 class Project(ProjectBase):
     id: int
@@ -40,19 +56,27 @@ class UserBase(BaseModel):
     name: Optional[str] = None
 
 class UserCreate(UserBase):
-    email: str
-    password: str
+    email: EmailStr
+    password: str = Field(...,min_length=8, max_length=255)
+
+    class Config:
+        schema_extra = {
+            "example":{
+                "name": "Andres Chacon",
+                "email": "andres.ch@pm.me",
+                "password": "Test12345"
+            }
+        }
 
 class User(UserBase):
     id: int
-    email: str
+    email: str = EmailStr(...)
     is_active: bool
 
     class Config:
         orm_mode = True
 
 class UserUpdate(UserBase):
-    email: Optional[str]
     password: Optional[str]
 
 
@@ -78,8 +102,12 @@ class UserProjectSchema(UserProjectBase):
     user: User
     role: Role
 
+class UserProject(UserProjectBase):
+    user: User
+    role: Optional[Role]
+
 class ProjectSchema(Project):
-    users: list[UserProjectBase] = []
+    users: list[UserProject] = []
 
 class UserSchema(User):
     projects: list[UserProjectBase] = []

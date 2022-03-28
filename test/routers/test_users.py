@@ -1,19 +1,18 @@
 from fastapi.testclient import TestClient
-from test.test import test_app
 
-client = TestClient(test_app())
 
-def test_create_user():
+def test_create_user(client):
     response = client.post(
         "/users/",
-        json={"name": "Andres", "email": "andres.ch@prom.me", "password": "Test123"}
+        json={"name": "Andres", "email": "andres.ch@prom.me", "password": "Test12345"}
     )
     assert response.status_code == 201
 
-def test_update_user_me():
-    # response = client.put(
-    #     "/users/",
-    #     json={"name": "Andres", "email": "andres.ch@prom.me", "password": "Test123"}
-    # )
-    # assert response.status_code == 201
-    pass
+
+def test_update_user_me(client, users, token):
+    response = client.put(
+        "/users/me",
+        headers={"Authorization": "Bearer " + token},
+        json={"name": "Andres", "email": "test@test.cl", "password": "Test12345"}
+    )
+    assert response.status_code == 200
