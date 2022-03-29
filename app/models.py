@@ -31,7 +31,7 @@ class User(Base):
     hashed_password = Column(String(255))
     is_active = Column(Boolean, default=True)
 
-    projects = relationship("UserProject", back_populates='user')
+    projects = relationship("UserProject", back_populates='user', cascade="all, delete-orphan")
 
 class Project(Base):
     __tablename__= "projects"

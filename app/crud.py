@@ -8,7 +8,6 @@ from app.utils.hasher import Hasher
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
-
 def create_user(db: Session, user: schemas.UserCreate):
     hashed_password = Hasher.get_password_hash(user.password)
     db_user = models.User(name=user.name, email=user.email,
@@ -18,14 +17,12 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
-
 def authenticate_user(db: Session, email: str, password: str):
     user = db.query(models.User).filter(models.User.email == email).first()
     if user and Hasher.verify_password(password, user.hashed_password):
         return user
     else:
         pass
-
 
 def update_user(db: Session, current_user: models.User, user: schemas.UserUpdate):
     user_dict = user.dict(exclude_unset=True)
@@ -40,6 +37,10 @@ def update_user(db: Session, current_user: models.User, user: schemas.UserUpdate
     db.refresh(current_user)
     return current_user
 
+def delete_user(db: Session, current_user: models.User):
+    db.delete(current_user)
+    db.commit()
+    return True
 
 def create_project(db: Session, current_user: models.User, project: schemas.ProjectBase):
     db_project = models.Project(**project.dict())
@@ -53,10 +54,19 @@ def create_project(db: Session, current_user: models.User, project: schemas.Proj
     db.commit()
     return db_project
 
+def update_project(db:Session, current_user: models.User, project_id: int, project: schemas.ProjectBase ):
+    return None
 
 def show_project(db: Session, current_user: models.User, project_id: int):
-    return db.query(models.Project).filter(models.Project.id == project_id).first()
-
+    project = db.query(models.Project).filter(models.Project.id == project_id).first()
+    # Check if project is not private for show and if it is private only the related users can see it
+    if project is not None and not project.private:
+        return project
+    elif project is not None and db.query(models.UserProject).where(models.UserProject.project_id == project_id, models.UserProject.user_id == current_user.id).first() is not None :
+        return project
+    else:
+        return None
 
 def show_projects(db: Session, current_user: models.User, skip: int = 0, limit: int = 100, q: str = "%"):
-    return db.query(models.Project).filter(or_(models.Project.title.like("%" + q + "%"), models.Project.description.like("%" + q + "%"))).offset(skip).limit(limit).all()
+    # Here we need check if the project is private, if it is private we need to check if exist relation with the user
+    return db.query(models.Project).join(models.UserProject, isouter=True).filter(models.UserProject.user_id == current_user.id, or_(models.Project.title.like("%" + q + "%"), models.Project.description.like("%" + q + "%"))).offset(skip).limit(limit).all()

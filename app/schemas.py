@@ -11,6 +11,12 @@ class Role(BaseModel):
 
     class Config:
         orm_mode = True
+        schema_extra = {
+            "example":{
+                "id": 1,
+                "role": "developer"
+            }
+        }
 
 """
     UserProject
@@ -22,6 +28,13 @@ class UserProjectBase(BaseModel):
 
     class Config:
         orm_mode = True
+        schema_extra = {
+            "example":{
+                "user_id": 1,
+                "project_id": 1,
+                "role_id": 1
+            }
+        }
 
 """
     Project
@@ -104,7 +117,7 @@ class UserProjectSchema(UserProjectBase):
 
 class UserProject(UserProjectBase):
     user: User
-    role: Optional[Role]
+    role: Role
 
 class ProjectSchema(Project):
     users: list[UserProject] = []
