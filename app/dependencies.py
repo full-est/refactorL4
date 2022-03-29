@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app import models, schemas, crud
 from app.utils import jwt
 from app.db.database import SessionLocal
+from jose import JWTError
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
