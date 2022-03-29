@@ -22,6 +22,15 @@ def show_me(current_user: schemas.User = Depends(get_current_active_user)):
 def update_me( user: schemas.UserUpdate, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_active_user)):
     return crud.update_user(db=db, current_user=current_user, user=user)
 
-@router.delete("/me", response_model=schemas.User, tags=["Users"])
-def delete_me( user: schemas.UserUpdate, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_active_user)):
-    return crud.update_user(db=db, db_user=current_user, user=user)
+@router.delete(
+    path="/me",
+    status_code=status.HTTP_200_OK,
+    tags=["Users"])
+def delete_me(
+    db: Session = Depends(get_db),
+    current_user: schemas.User = Depends(get_current_active_user)
+):
+    crud.delete_user(db=db, current_user=current_user)
+    return {
+        "message": "Resource deleted."
+    }
