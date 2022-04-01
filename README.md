@@ -2,7 +2,7 @@
 
 [![python](https://img.shields.io/pypi/pyversions/fastapi)]()
 
-This is a simple API-REST created with FastApi.
+This is a simple API-REST created with FastApi. Could be a template for next projects or a simple example for learn.
 
 This app use:
 
@@ -21,7 +21,7 @@ Trying to do some basic functionalities of an API REST like:
 * Send emails (pending)
 * Background tasks (pending)
 * File storage system - upload files to aws maybe (pending)
-*TESTS
+* TESTS
 
 
 
