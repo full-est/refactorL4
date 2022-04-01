@@ -43,4 +43,4 @@ class Project(Base):
     active = Column(Boolean, default=True)
     starts = Column(Integer, default=0)
 
-    users = relationship("UserProject", back_populates='project')
+    users = relationship("UserProject", back_populates='project', cascade="all, delete-orphan")
