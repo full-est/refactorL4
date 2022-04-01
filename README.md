@@ -14,15 +14,24 @@ This app use:
 * [python-jose](https://python-jose.readthedocs.io/en/latest/) (jwt for auth)
 * [passlib](https://passlib.readthedocs.io/en/stable/) (encrypt passwords)
 
+The idea of the app is simulate Users that create and participate in Projects. So the schema of the database is a simple relation many-to-many between Users and Projects, using a Association model called UserProjects.
+
 Trying to do some basic functionalities of an API REST like:
 
-* Authentication
-* CRUD for resources (working)
+* Authentication:
+    - Login
+    - Forgot-password
+    - Reset-password
+* CRUD for resources
+    - User
+    - Project
 * Send emails (pending)
+    - Reset password email
 * Background tasks (pending)
+    - The reset password email render after return
 * File storage system - upload files to aws maybe (pending)
+    - Upload a avatar for users
 * TESTS
-
 
 
 
