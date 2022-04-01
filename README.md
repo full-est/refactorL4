@@ -14,7 +14,7 @@ This app use:
 * [python-jose](https://python-jose.readthedocs.io/en/latest/) (jwt for auth)
 * [passlib](https://passlib.readthedocs.io/en/stable/) (encrypt passwords)
 
-The idea of the app is simulate Users that create and participate in Projects. So the schema of the database is a simple relation many-to-many between Users and Projects, using a Association model called UserProjects.
+The idea of the app is simulate Users that create and participate in  Projects. So the schema of the database is a simple relation many-to-many between Users and Projects, using a Association model called UserProjects.
 
 Trying to do some basic functionalities of an API REST like:
 
