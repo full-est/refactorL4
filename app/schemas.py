@@ -2,6 +2,7 @@ from typing import Optional
 from datetime import datetime
 from pydantic import BaseModel, Field, EmailStr
 
+from app.utils import jwt
 """
     Role Schemas.
 """
@@ -124,3 +125,19 @@ class ProjectSchema(Project):
 
 class UserSchema(User):
     projects: list[UserProjectBase] = []
+
+# For auth
+class Email(BaseModel):
+    email: EmailStr
+
+class ResetPassword(BaseModel):
+    token: str = Field(..., min_length=10, max_length=255)
+    password: str = Field(..., min_length=8)
+
+    class Config:
+        schema_extra = {
+            "example":{
+                "token": jwt.create_access_token({}),
+                "password": "Test123456789"
+            }
+        }
