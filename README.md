@@ -33,6 +33,9 @@ Trying to do some basic functionalities of an API REST like:
     - Upload a avatar for users
 * TESTS
 
+## API Documentation
+
+You can find the app running on heroku so the interactiv documentation can be found [here](https://simple-fastapi-example.herokuapp.com/docs).
 
 
 ## Installation
