@@ -82,7 +82,7 @@ uvicorn app.main:app --reload
 Andres – andres.ch(at)protonmail(dot)com
 
 
-[https://github.com/a-chacon/github-link](https://github.com/dbader/)
+[https://github.com/a-chacon/github-link](https://github.com/a-chacon/)
 
 ## Contributing
 
