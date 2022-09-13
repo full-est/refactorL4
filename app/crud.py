@@ -61,10 +61,12 @@ def create_project(db: Session, current_user: models.User, project: schemas.Proj
 
 
 def update_project(db: Session, project: models.Project, project_params: schemas.ProjectBase):
-    db.query(models.Project).filter(models.Project.id == project.id).update(project_params.dict(exclude_unset=True))
+    db.query(models.Project).filter(models.Project.id == project.id).update(
+        project_params.dict(exclude_unset=True))
     db.commit()
     db.refresh(project)
     return project
+
 
 def show_project(db: Session, current_user: models.User, project_id: int):
     project = db.query(models.Project).filter(
@@ -85,7 +87,8 @@ def show_projects(db: Session, current_user: models.User, skip: int = 0, limit: 
 
 def show_user_project(db: Session, current_user: models.User, project: models.Project):
     return db.query(models.UserProject).filter(models.UserProject.user ==
-                                        current_user, models.UserProject.project == project).first()
+                                               current_user, models.UserProject.project == project).first()
+
 
 def delete_project(db: Session, project: models.Project):
     db.delete(project)
