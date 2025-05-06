@@ -4,27 +4,27 @@ from . import models, schemas
 
 from app.utils.hasher import Hasher
 
+def prepare_user_data(user: schemas.UserCreate):
+    return {
+        "name": user.name,
+        "email": user.email,
+        "hashed_password": Hasher.get_password_hash(user.password)
+    }
 
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
 
 
-def create_user(db: Session, user: schemas.UserCreate):
-    hashed_password = Hasher.get_password_hash(user.password)
-    db_user = models.User(name=user.name, email=user.email,
-                          hashed_password=hashed_password)
+def create_user(db: Session, user_data: dict):
+    db_user = models.User(**user_data)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
 
-def authenticate_user(db: Session, email: str, password: str):
-    user = db.query(models.User).filter(models.User.email == email).first()
-    if user and Hasher.verify_password(password, user.hashed_password):
-        return user
-    else:
-        pass
+
+
 
 
 def update_user(db: Session, current_user: models.User, user: schemas.UserUpdate):
@@ -71,13 +71,19 @@ def update_project(db: Session, project: models.Project, project_params: schemas
 def show_project(db: Session, current_user: models.User, project_id: int):
     project = db.query(models.Project).filter(
         models.Project.id == project_id).first()
+    if project is None:
+        return
     # Check if project is not private for show and if it is private only the related users can see it
-    if project is not None and not project.private:
+    if not project.private:
         return project
-    elif project is not None and db.query(models.UserProject).where(models.UserProject.project_id == project_id, models.UserProject.user_id == current_user.id).first() is not None:
+
+    is_user_related = db.query(models.UserProject).filter_by(
+        project_id=project_id,
+        user_id=current_user.id
+    ).first() is not None
+
+    if is_user_related:
         return project
-    else:
-        return None
 
 
 def show_projects(db: Session, current_user: models.User, skip: int = 0, limit: int = 100, q: str = "%"):

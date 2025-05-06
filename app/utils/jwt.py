@@ -1,11 +1,15 @@
 from datetime import datetime, timedelta
 from jose import jwt
 from typing import Optional
+from dotenv import load_dotenv
+import os
 
 ## TODO: Include this variables on env
 # to get a string like this run:
 # openssl rand -hex 32
-SECRET_KEY = "2573f34ad4b5a5f0dfa67ff4c4085fb9f8563decaedcb0e209b4613962089190"
+
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 

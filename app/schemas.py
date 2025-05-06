@@ -1,12 +1,11 @@
 from typing import Optional
-from datetime import datetime
 from pydantic import BaseModel, Field, EmailStr
 
 from app.utils import jwt
 """
     Role Schemas.
 """
-class Role(BaseModel):
+class RoleSchema(BaseModel):
     id: int
     role: str
 

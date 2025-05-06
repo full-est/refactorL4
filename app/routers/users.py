@@ -18,7 +18,7 @@ def create(
 def show_me(current_user: schemas.User = Depends(get_current_active_user)):
     return current_user
 
-@router.put("/me", response_model=schemas.User, tags=["Users"])
+@router.post("/me", response_model=schemas.User, tags=["Users"])
 def update_me( user: schemas.UserUpdate, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_active_user)):
     return crud.update_user(db=db, current_user=current_user, user=user)
 

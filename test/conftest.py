@@ -3,7 +3,6 @@ from app.main import app
 from app.db.database import Base
 from app.dependencies import get_db
 from app import crud, schemas, models
-from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session

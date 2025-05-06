@@ -1,8 +1,6 @@
-from fastapi import Depends, FastAPI, HTTPException, Request, Response
-from sqlalchemy.orm import Session
-from app.db.database import SessionLocal, engine
-from app import models
+from fastapi import FastAPI
 from app.routers import users, auth, projects
+
 
 app = FastAPI(title="ExampleOfFastAPI")
 

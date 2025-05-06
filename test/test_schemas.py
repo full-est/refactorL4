@@ -1,12 +1,12 @@
 from app import schemas
 
 def test_role_schemas():
-    role = schemas.Role(role="developer", id=1)
+    role = schemas.RoleSchema(role="developer", id=1)
     assert role.role == "developer"
     assert role.id == 1
 
 def test_user_project():
-    role = schemas.Role(role="developer", id=1)
+    role = schemas.RoleSchema(role="developer", id=1)
     user = schemas.User(id=1, name="andres", email="andres.ch@pm.me", is_active=True)
     project = schemas.Project(id=1, title="titul", description="description",private=True, active=True, starts=0 )
     user_project = schemas.UserProjectSchema(role_id=1, user_id=1, project_id=1, role=role, user=user,project=project )
